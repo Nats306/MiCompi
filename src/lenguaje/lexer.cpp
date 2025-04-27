@@ -57,6 +57,34 @@ std::string Lexer::readNumber() {
     return source.substr(startPos, currentPos - startPos);
 }
 
+std::string Lexer::readNumberDecimal() {
+    size_t startPos = currentPos;
+    bool tienePunto = false;
+
+    while (isNumber(currentChar) || (!tienePunto && currentChar == '.')) {
+        if (currentChar == '.') {
+            tienePunto = true;
+        }
+        readChar();
+    }
+    return source.substr(startPos, currentPos - startPos);
+}
+
+std::string Lexer::readString() {
+    size_t startPos = currentPos + 1;
+    readChar();
+
+    while (currentChar != '"' && currentChar != 0) {
+        readChar();
+    }
+
+    std::string str = source.substr(startPos, currentPos - startPos);
+
+    readChar();
+    return str;
+}
+
+
 Token Lexer::nextToken() {
     skipWhitespace();
     
@@ -107,14 +135,48 @@ Token Lexer::nextToken() {
                 token = Token(TokenType::NOT, "!");
             }
             break;
+        case '/':
+            token = Token(TokenType::SLASH, "/");
+            break;
+        case '*':
+            token = Token(TokenType::ASTERISK, "*");
+            break;
+        case '(':
+            token = Token(TokenType::LPAREN, "(");
+            break;
+        case ')':
+            token = Token(TokenType::RPAREN, ")");
+            break;
+        case '{':
+            token = Token(TokenType::LBRACE, "{");
+            break;
+        case '}':
+            token = Token(TokenType::RBRACE, "}");
+            break;
+        case '[':
+            token = Token(TokenType::LBRACKET, "[");
+            break;
+        case ']':
+            token = Token(TokenType::RBRACKET, "]");
+            break;
+        case '-':
+            token = Token(TokenType::MINUS, "-");
+            break;
+        case '"':
+            token = Token(TokenType::STRING, readString());
+            break;
         default:
             if (isLetter(currentChar)) {
                 std::string literal = readIdentifier();
                 TokenType type = lookup_token_type(literal);
                 return Token(type, literal);
             } else if (isNumber(currentChar)) {
-                std::string literal = readNumber();
-                return Token(TokenType::INT, literal);
+                std::string literal = readNumberDecimal();
+                if (literal.find('.') != std::string::npos) {
+                    return Token(TokenType::DOUBLE, literal);
+                } else {
+                    return Token(TokenType::INT, literal);
+                }
             }
             break;
     }

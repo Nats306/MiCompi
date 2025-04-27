@@ -19,6 +19,9 @@ private:
     bool isNumber(char ch) const;
     std::string readIdentifier();
     std::string readNumber();
+    std::string readNumberDecimal();
+    std::string readString();
+
     
     std::string source;
     size_t currentPos;
@@ -26,4 +29,4 @@ private:
     char currentChar;
 };
 
-#endif // LEXER_HPP
+#endif 

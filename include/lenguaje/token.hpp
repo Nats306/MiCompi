@@ -8,7 +8,17 @@ enum class TokenType {
     ASSIGN,     // =
     COMMA,      // ,
     DIVISION,
+    STRING,
+    SEMICOLON,  // ;
     DOUBLE,
+    LPAREN,     // (
+    RPAREN,     // )
+    LBRACE,     // {
+    RBRACE,     // }
+    LBRACKET,   // [
+    RBRACKET,   // ]
+    ASTERISK,   // *
+    SLASH,     // /
     ELSE,
     EOF_,       // EOF (usamos _ porque EOF es una macro en C)
     EQ,         // ==
@@ -26,8 +36,8 @@ enum class TokenType {
     NOE,        // !=
     NOT,        // !
     PLUS,       // +
+    MINUS,      // -
     RETURN,
-    SEMICOLON,  // ;
     TRUE
 };
 
@@ -50,7 +60,12 @@ struct Token {
             {TokenType::LT, "LT"}, {TokenType::LTE, "LTE"},
             {TokenType::NOE, "NOE"}, {TokenType::NOT, "NOT"},
             {TokenType::PLUS, "PLUS"}, {TokenType::RETURN, "RETURN"},
-            {TokenType::SEMICOLON, "SEMICOLON"}, {TokenType::TRUE, "TRUE"}
+            {TokenType::SEMICOLON, "SEMICOLON"}, {TokenType::TRUE, "TRUE"},
+            {TokenType::LPAREN, "LPAREN"}, {TokenType::RPAREN, "RPAREN"},
+            {TokenType::ASTERISK, "ASTERISK"}, {TokenType::SLASH, "SLASH"},
+            {TokenType::LBRACE, "LBRACE"}, {TokenType::RBRACE, "RBRACE"},
+            {TokenType::LBRACKET, "LBRACKET"}, {TokenType::RBRACKET, "RBRACKET"},
+            {TokenType::MINUS, "MINUS"}, {TokenType::STRING, "STRING"},
         };
         auto it = typeNames.find(type);
         std::string typeStr = (it != typeNames.end()) ? it->second : "UNKNOWN";
@@ -61,4 +76,4 @@ struct Token {
 
 TokenType lookup_token_type(const std::string& literal);
 
-#endif // TOKEN_HPP
+#endif 
